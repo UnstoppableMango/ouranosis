@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package dev.unmango.ouranosis.v1alpha1;
+
+message ClientEvent {}
+
+message ServerEvent {}
