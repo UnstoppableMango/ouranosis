@@ -23,3 +23,4 @@ jobs:
         with:
           token: ${{ secrets.BUF_TOKEN }}
           version: ${{ env.BUF_VERSION }}
+          breaking: false
