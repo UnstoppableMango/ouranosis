@@ -4,11 +4,17 @@ go 1.24.3
 
 tool (
 	github.com/bufbuild/buf/cmd/buf
+	github.com/onsi/ginkgo/v2/ginkgo
 	github.com/unmango/devctl
 )
 
 require (
 	buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.6-20250511232440-7aece642b516.1
+	github.com/charmbracelet/log v0.4.0
+	github.com/onsi/ginkgo/v2 v2.23.4
+	github.com/onsi/gomega v1.36.3
+	github.com/unmango/go v0.3.0
+	google.golang.org/grpc v1.71.0
 	google.golang.org/protobuf v1.36.6
 )
 
@@ -34,7 +40,6 @@ require (
 	github.com/bufbuild/protoplugin v0.0.0-20250218205857-750e09ce93e1 // indirect
 	github.com/bufbuild/protovalidate-go v0.9.3 // indirect
 	github.com/charmbracelet/lipgloss v1.0.0 // indirect
-	github.com/charmbracelet/log v0.4.0 // indirect
 	github.com/charmbracelet/x/ansi v0.8.0 // indirect
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.16.3 // indirect
@@ -56,6 +61,7 @@ require (
 	github.com/gofrs/flock v0.12.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/cel-go v0.24.1 // indirect
+	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-containerregistry v0.20.3 // indirect
 	github.com/google/go-github/v68 v68.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
@@ -85,7 +91,6 @@ require (
 	github.com/moby/term v0.5.2 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/muesli/termenv v0.16.0 // indirect
-	github.com/onsi/ginkgo/v2 v2.23.4 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
@@ -106,7 +111,6 @@ require (
 	github.com/tetratelabs/wazero v1.9.0 // indirect
 	github.com/unmango/aferox v0.1.2 // indirect
 	github.com/unmango/devctl v0.1.7 // indirect
-	github.com/unmango/go v0.3.0 // indirect
 	github.com/vbatts/tar-split v0.12.1 // indirect
 	go.lsp.dev/jsonrpc2 v0.10.0 // indirect
 	go.lsp.dev/pkg v0.0.0-20210717090340-384b27a52fb2 // indirect
