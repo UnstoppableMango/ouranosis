@@ -1,3 +1,20 @@
 syntax = "proto3";
 
 package dev.unmango.ouranosis.v1alpha1;
+
+import "dev/unmango/game/v1alpha1/state.proto";
+import "dev/unmango/ouranosis/v1alpha1/event.proto";
+
+message ReduceRequest {
+  game.v1alpha1.State state = 1;
+  repeated ClientEvent events = 2;
+}
+
+message ReduceResponse {
+  game.v1alpha1.State state = 1;
+  repeated ServerEvent events = 2;
+}
+
+service ServerService {
+  rpc Reduce(ReduceRequest) returns (ReduceResponse);
+}

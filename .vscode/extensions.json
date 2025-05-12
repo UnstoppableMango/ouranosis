@@ -2,6 +2,7 @@
   "recommendations": [
     "mkhl.direnv",
     "editorconfig.editorconfig",
-    "golang.go"
+    "golang.go",
+    "bufbuild.vscode-buf"
   ]
 }
