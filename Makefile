@@ -6,11 +6,16 @@ DEVCTL := $(GO) tool devctl
 
 GO_SRC    != $(DEVCTL) list --go
 PROTO_SRC != $(BUF) ls-files
+GO_PB_SRC := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
 
 build: bin/client bin/server .make/buf-build
+gen generate: ${GO_PB_SRC}
 fmt format: .make/buf-fmt .make/go-fmt
 lint: .make/buf-lint .make/go-vet
 tidy: go.sum buf.lock
+
+${GO_PB_SRC} &: buf.gen.yaml ${PROTO_SRC}
+	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
 
 bin/client bin/server: bin/%: go.mod ${GO_SRC}
 	$(GO) build -o $@ ./cmd/$*

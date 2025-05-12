@@ -8,6 +8,8 @@ buf.build/gen/go/bufbuild/registry/protocolbuffers/go v1.36.6-20250408145534-f5c
 buf.build/gen/go/bufbuild/registry/protocolbuffers/go v1.36.6-20250408145534-f5ce355693bb.1/go.mod h1:ee69ieBAzwc/oY/Vde0K4r6JWvrk093q4Z/FXexPMmA=
 buf.build/gen/go/pluginrpc/pluginrpc/protocolbuffers/go v1.36.6-20241007202033-cf42259fcbfc.1 h1:trcsXBDm8exui7mvndZnvworCyBq1xuMnod2N0j79K8=
 buf.build/gen/go/pluginrpc/pluginrpc/protocolbuffers/go v1.36.6-20241007202033-cf42259fcbfc.1/go.mod h1:OUbhXurY+VHFGn9FBxcRy8UB7HXk9NvJ2qCgifOMypQ=
+buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.6-20250511232440-7aece642b516.1 h1:AvSXGk4qjFsavO9Bj7CXj1+radTO3SB+4q2i54jcQAg=
+buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.6-20250511232440-7aece642b516.1/go.mod h1:BpYYSUF8D7FTi0ZcSa3QfgFw+o50tvvSmafruXayyD8=
 buf.build/go/bufplugin v0.8.0 h1:YgR1+CNGmzR69jt85oRWTa5FioZoX/tOrHV+JxfNnnk=
 buf.build/go/bufplugin v0.8.0/go.mod h1:rcm0Esd3P/GM2rtYTvz3+9Gf8w9zdo7rG8dKSxYHHIE=
 buf.build/go/protoyaml v0.3.2 h1:QJF3k7btMameIadLLcK3Rry81OK3gYA5nZMXirV1Bs4=
