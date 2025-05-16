@@ -1,5 +1,7 @@
 _ != mkdir -p .make
 
+export GOBIN := ${CURDIR}/bin
+
 GO     ?= go
 BUF    ?= $(GO) tool buf
 BUN    ?= bun
@@ -29,6 +31,11 @@ world: bin/world
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
 
+%_suite_test.go:
+	cd $(dir $@) && $(GINKGO) bootstrap
+%_test.go:
+	cd $(dir $@) && $(GINKGO) generate $(notdir $@)
+
 bin/wui: cmd/wui/dist/index.html
 $(addprefix bin/,client server world wui): bin/%: go.mod ${GO_SRC}
 	$(GO) build -o $@ ./cmd/$*
@@ -41,7 +48,13 @@ cmd/wui/dist/index.html: .make/bun-install
 	$(BUN) run --cwd cmd/wui build
 
 bin/buf: go.mod ## Optional bin install for editor integration
-	GOBIN=${CURDIR}/bin go install github.com/bufbuild/buf/cmd/buf
+	$(GO) install github.com/bufbuild/buf/cmd/buf
+
+bin/devctl: go.mod ## Optional bin install
+	$(GO) install github.com/unmango/devctl
+
+bin/ginkgo: go.mod ## Optional bin install
+	$(GO) install github.com/onsi/ginkgo/v2/ginkgo
 
 buf.lock: buf.yaml ${PROTO_SRC}
 	$(BUF) dep update
