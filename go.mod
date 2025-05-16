@@ -11,6 +11,7 @@ tool (
 require (
 	buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.6-20250511232440-7aece642b516.1
 	github.com/charmbracelet/bubbletea/v2 v2.0.0-beta1
+	github.com/charmbracelet/lipgloss v1.0.0
 	github.com/charmbracelet/log v0.4.1
 	github.com/onsi/ginkgo/v2 v2.23.4
 	github.com/onsi/gomega v1.37.0
@@ -42,7 +43,6 @@ require (
 	github.com/bufbuild/protoplugin v0.0.0-20250218205857-750e09ce93e1 // indirect
 	github.com/bufbuild/protovalidate-go v0.9.3 // indirect
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
-	github.com/charmbracelet/lipgloss v1.0.0 // indirect
 	github.com/charmbracelet/x/ansi v0.8.0 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
 	github.com/charmbracelet/x/input v0.3.4 // indirect
