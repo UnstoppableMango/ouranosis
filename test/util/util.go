@@ -1,12 +1,12 @@
 package util
 
 import (
-	"bytes"
 	"context"
-	"fmt"
 	"os/exec"
 
 	"github.com/onsi/ginkgo/v2"
+	"github.com/onsi/gomega"
+	"github.com/onsi/gomega/gexec"
 	"github.com/unmango/go/vcs/git"
 )
 
@@ -16,17 +16,12 @@ func init() {
 	gitRoot, _ = git.Root(context.Background())
 }
 
-func Run(cmd *exec.Cmd) (string, error) {
+func Start(command string, arg ...string) *gexec.Session {
 	ginkgo.GinkgoHelper()
 
-	stderr, stdout := &bytes.Buffer{}, &bytes.Buffer{}
-	cmd.Stderr = stderr
-	cmd.Stdout = stdout
-	cmd.Dir = gitRoot
+	cmd := exec.Command(command, arg...)
+	ses, err := gexec.Start(cmd, ginkgo.GinkgoWriter, ginkgo.GinkgoWriter)
+	gomega.Expect(err).NotTo(gomega.HaveOccurred())
 
-	if err := cmd.Run(); err != nil {
-		return "", fmt.Errorf("%s: %w", stderr, err)
-	} else {
-		return stdout.String(), nil
-	}
+	return ses
 }
