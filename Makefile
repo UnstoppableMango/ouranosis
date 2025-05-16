@@ -36,11 +36,17 @@ bin/wui.tar: cmd/wui/Dockerfile cmd/wui/main.go ${TS_SRC}
 cmd/wui/frontend/dist/index.html:
 	$(BUN) run --cwd $(dir $@) build
 
+bin/buf: go.mod ## Optional bin install for editor integration
+	GOBIN=${CURDIR}/bin go install github.com/bufbuild/buf/cmd/buf
+
 buf.lock: buf.yaml ${PROTO_SRC}
 	$(BUF) dep update
 
 go.sum: go.mod ${GO_SRC}
 	$(GO) mod tidy
+
+.envrc: hack/example.envrc
+	cp $< $@ && chmod u+r $@
 
 .make/buf-build: ${PROTO_SRC}
 	$(BUF) build $(addprefix --path ,$?)
