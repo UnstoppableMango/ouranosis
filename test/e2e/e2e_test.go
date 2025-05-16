@@ -19,7 +19,7 @@ var _ = Describe("E2E Suite", func() {
 				ses, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 				Expect(err).NotTo(HaveOccurred())
 
-				Eventually(ses).Should(gbytes.Say(`.*`))
+				Eventually(ses.Err).Should(gbytes.Say(`ListenAndServing`))
 				serverSession = ses
 			})
 
@@ -38,7 +38,7 @@ var _ = Describe("E2E Suite", func() {
 				ses, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 				Expect(err).NotTo(HaveOccurred())
 
-				Eventually(ses).Should(gbytes.Say(`.*`))
+				Eventually(ses.Err).Should(gbytes.Say(`Got response`))
 				clientSession = ses
 			})
 
