@@ -11,10 +11,12 @@ import (
 var _ = Describe("E2E Suite", func() {
 	It("Should connect", func() {
 		server := util.Start(serverPath)
-		client := util.Start(clientPath, "text")
+		Eventually(server.Err).Should(gbytes.Say(`ListenAndServing`))
 
+		client := util.Start(clientPath, "text")
 		Eventually(client.Err).Should(gbytes.Say(`Got response`))
 		Eventually(client).Should(gexec.Exit(0))
+
 		Eventually(server.Interrupt()).Should(gexec.Exit())
 	})
 })
