@@ -12,6 +12,7 @@ tool (
 
 require (
 	buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.6-20250511232440-7aece642b516.1
+	github.com/charmbracelet/bubbletea/v2 v2.0.0-beta1
 	github.com/charmbracelet/log v0.4.2
 	github.com/google/uuid v1.6.0
 	github.com/go-chi/chi/v5 v5.2.2
@@ -53,9 +54,12 @@ require (
 	github.com/charmbracelet/lipgloss v1.1.0 // indirect
 	github.com/charmbracelet/x/ansi v0.9.2 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
+	github.com/charmbracelet/x/input v0.3.4 // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
+	github.com/charmbracelet/x/windows v0.2.0 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
+	github.com/containerd/log v0.1.0 // indirect
 	github.com/containerd/stargz-snapshotter/estargz v0.17.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
@@ -95,6 +99,7 @@ require (
 	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/term v0.5.2 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
+	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/termenv v0.16.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
