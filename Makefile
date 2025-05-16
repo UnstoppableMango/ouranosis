@@ -11,7 +11,7 @@ GO_SRC      != $(DEVCTL) list --go
 TS_SRC      != $(DEVCTL) list --ts
 PROTO_SRC   != $(BUF) ls-files
 GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
-GO_GRPC_SRC := ${PROTO_SRC:proto/%.proto=gen/%_grpc.pb.go}
+GO_GRPC_SRC := gen/dev/unmango/ouranosis/v1alpha1/server_grpc.pb.go
 
 build: bin/client bin/server bin/wui .make/buf-build
 gen generate: ${GO_PB_SRC}
