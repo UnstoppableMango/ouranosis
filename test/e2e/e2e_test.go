@@ -13,7 +13,7 @@ import (
 var _ = Describe("E2E Suite", func() {
 	It("Should connect", func() {
 		server := util.Start(serverPath)
-		client := util.Start(clientPath)
+		client := util.Start(clientPath, "text")
 
 		Eventually(client.Err).Should(gbytes.Say(`Got response`))
 		Eventually(client).Should(gexec.Exit(0))
@@ -44,7 +44,7 @@ var _ = Describe("E2E Suite", func() {
 			var clientSession *gexec.Session
 
 			It("should run", func() {
-				cmd := exec.Command(clientPath)
+				cmd := exec.Command(clientPath, "text")
 				ses, err := gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 				Expect(err).NotTo(HaveOccurred())
 
