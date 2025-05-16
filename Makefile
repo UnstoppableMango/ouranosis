@@ -28,6 +28,12 @@ start-frontend:
 	$(BUN) run --cwd cmd/wui start
 world: bin/world
 
+start-tui: bin/client
+	$<
+
+watch-tui:
+	watchexec -r -e go --wrap-process session -- "go run ./cmd/client"
+
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
 
