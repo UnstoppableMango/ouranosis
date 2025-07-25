@@ -26,11 +26,9 @@ func main() {
 	ctx, cancel = signal.NotifyContext(ctx, os.Interrupt)
 
 	go func() {
-		select {
-		case <-ctx.Done():
-			log.Info("Context completed, performing a graceful stop")
-			srv.GracefulStop()
-		}
+		<-ctx.Done()
+		log.Info("Context completed, performing a graceful stop")
+		srv.GracefulStop()
 	}()
 
 	log.Info("ListenAndServing 0.0.0.0:6969")
