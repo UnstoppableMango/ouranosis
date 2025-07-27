@@ -14,7 +14,7 @@ require (
 	buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.6-20250511232440-7aece642b516.1
 	github.com/charmbracelet/log v0.4.2
 	github.com/onsi/ginkgo/v2 v2.23.4
-	github.com/onsi/gomega v1.37.0
+	github.com/onsi/gomega v1.38.0
 	github.com/unmango/go v0.5.1
 	google.golang.org/grpc v1.72.2
 	google.golang.org/protobuf v1.36.6
