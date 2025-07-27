@@ -113,7 +113,7 @@ require (
 	github.com/stoewer/go-strcase v1.3.0 // indirect
 	github.com/tetratelabs/wazero v1.9.0 // indirect
 	github.com/unmango/aferox v0.1.2 // indirect
-	github.com/unmango/devctl v0.1.7 // indirect
+	github.com/unmango/devctl v0.3.0 // indirect
 	github.com/vbatts/tar-split v0.12.1 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	go.lsp.dev/jsonrpc2 v0.10.0 // indirect
