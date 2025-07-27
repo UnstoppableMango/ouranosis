@@ -15,6 +15,7 @@ var title = lipgloss.NewStyle().
 
 type Client struct {
 	Height, Width int
+	Game          *Game
 }
 
 func NewClient() Client {
