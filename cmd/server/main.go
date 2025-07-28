@@ -21,9 +21,7 @@ func main() {
 	srv := grpc.NewServer()
 	osv1alpha1.RegisterServerServiceServer(srv, server.Server{})
 
-	var cancel context.CancelFunc
-	ctx := context.Background()
-	ctx, cancel = signal.NotifyContext(ctx, os.Interrupt)
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 
 	go func() {
 		<-ctx.Done()
