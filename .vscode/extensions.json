@@ -3,6 +3,7 @@
     "mkhl.direnv",
     "editorconfig.editorconfig",
     "golang.go",
-    "bufbuild.vscode-buf"
+    "bufbuild.vscode-buf",
+    "oven.bun-vscode"
   ]
 }

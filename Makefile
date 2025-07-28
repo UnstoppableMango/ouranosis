@@ -1,9 +1,10 @@
 _ != mkdir -p .make
 
-GO     := go
-BUF    := $(GO) tool buf
-DEVCTL := $(GO) tool devctl
-GINKGO := $(GO) tool ginkgo
+GO     ?= go
+BUF    ?= $(GO) tool buf
+BUN    ?= bun
+DEVCTL ?= $(GO) tool devctl
+GINKGO ?= $(GO) tool ginkgo
 
 GO_SRC      != $(DEVCTL) list --go
 PROTO_SRC   != $(BUF) ls-files
@@ -17,11 +18,16 @@ fmt format: .make/buf-fmt .make/go-fmt
 lint: .make/buf-lint .make/go-vet
 tidy: go.sum buf.lock
 
+frontend: cmd/wui/frontend/dist/index.html
+
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
 
 bin/client bin/server: bin/%: go.mod ${GO_SRC}
 	$(GO) build -o $@ ./cmd/$*
+
+cmd/wui/frontend/dist/index.html:
+	$(BUN) run --cwd $(dir $@) build
 
 buf.lock: buf.yaml ${PROTO_SRC}
 	$(BUF) dep update
