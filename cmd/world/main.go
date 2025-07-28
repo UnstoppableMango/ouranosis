@@ -8,7 +8,7 @@ import (
 
 	"github.com/charmbracelet/log"
 	osv1alpha1 "github.com/unstoppablemango/ouranosis/gen/dev/unmango/ouranosis/v1alpha1"
-	"github.com/unstoppablemango/ouranosis/pkg/server"
+	"github.com/unstoppablemango/ouranosis/pkg/world"
 	"google.golang.org/grpc"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	}
 
 	srv := grpc.NewServer()
-	osv1alpha1.RegisterServerServiceServer(srv, server.Server{})
+	osv1alpha1.RegisterWorldServiceServer(srv, &world.Server{})
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 

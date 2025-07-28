@@ -15,6 +15,7 @@ require (
 	github.com/charmbracelet/bubbletea/v2 v2.0.0-beta1
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/charmbracelet/log v0.4.2
+	github.com/google/uuid v1.6.0
 	github.com/go-chi/chi/v5 v5.2.2
 	github.com/olivere/vite v0.1.0
 	github.com/onsi/ginkgo/v2 v2.23.4

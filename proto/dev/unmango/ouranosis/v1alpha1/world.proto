@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package dev.unmango.ouranosis.v1alpha1;
+
+message JoinRequest {}
+
+message JoinResponse {
+  string uuid = 1;
+}
+
+service WorldService {
+  rpc Join(JoinRequest) returns (JoinResponse);
+}
