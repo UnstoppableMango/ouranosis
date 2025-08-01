@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/olivere/vite"
 	"github.com/spf13/pflag"
 	"github.com/unmango/go/cli"
@@ -22,7 +23,7 @@ var indexTemplate = `
 `
 
 func main() {
-	dev := pflag.BoolP("dev", "", false, "Development mode")
+	dev := pflag.Bool("dev", false, "Development mode")
 
 	viteFragment, err := vite.HTMLFragment(vite.Config{
 		FS:    os.DirFS("frontend/dist"),
@@ -32,9 +33,14 @@ func main() {
 		cli.Fail(err)
 	}
 
-	tmpl := template.Must(template.New("index").Parse(indexTemplate))
+	router := gin.Default()
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.New("index").Parse(indexTemplate))
+	router.SetHTMLTemplate(tmpl)
+	router.GET()
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		pageData := map[string]any{
 			"Vite": viteFragment,
 		}
