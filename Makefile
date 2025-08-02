@@ -13,7 +13,7 @@ PROTO_SRC   != $(BUF) ls-files
 GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
 GO_GRPC_SRC := ${PROTO_SRC:proto/%.proto=gen/%_grpc.pb.go}
 
-build: bin/client bin/server .make/buf-build
+build: bin/client bin/server bin/wui .make/buf-build
 gen generate: ${GO_PB_SRC}
 test: .make/ginkgo-run
 fmt format: .make/buf-fmt .make/go-fmt
@@ -21,11 +21,14 @@ lint: .make/buf-lint .make/go-vet
 tidy: go.sum buf.lock
 docker: bin/wui.tar
 
-frontend: cmd/wui/frontend/dist/index.html
+frontend: bin/wui
+start-frontend:
+	$(BUN) run --cwd cmd/wui start
 
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
 
+bin/wui: cmd/wui/dist/index.html
 bin/client bin/server: bin/%: go.mod ${GO_SRC}
 	$(GO) build -o $@ ./cmd/$*
 
@@ -33,8 +36,10 @@ bin/wui.tar: cmd/wui/Dockerfile cmd/wui/main.go ${TS_SRC}
 	$(DOCKER) build ${CURDIR} --file $< --output type=tar,dest=$@
 	$(DOCKER) import $@ ouranosis-wui
 
-cmd/wui/frontend/dist/index.html:
-	$(BUN) run --cwd $(dir $@) build
+cmd/wui/dist/index.html: cmd/wui/bun.lock
+	$(BUN) run --cwd cmd/wui build
+cmd/wui/bun.lock: cmd/wui/package.json
+	$(BUN) install --cwd $(dir $@)
 
 buf.lock: buf.yaml ${PROTO_SRC}
 	$(BUF) dep update
