@@ -37,6 +37,9 @@ bin/wui: cmd/wui/dist/index.html
 $(addprefix bin/,client server world wui): bin/%: go.mod ${GO_SRC}
 	$(GO) build -o $@ ./cmd/$*
 
+bin/wui: cmd/wui/main.go cmd/wui/dist/index.html
+	$(GO) build -o $@ $<
+
 bin/wui.tar: cmd/wui/Dockerfile cmd/wui/main.go ${TS_SRC}
 	$(DOCKER) build ${CURDIR} --file $< \
 	--output type=tar,dest=$@ \
