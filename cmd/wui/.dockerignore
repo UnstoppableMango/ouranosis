@@ -1,0 +1,7 @@
+dist/
+node_modules/
+.dockerignore
+Dockerfile
+eslint.config.js
+README.md
+start.ts

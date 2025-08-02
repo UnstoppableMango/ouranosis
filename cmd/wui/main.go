@@ -1,52 +1,101 @@
 package main
 
 import (
-	"html/template"
+	"embed"
+	"io/fs"
+	"net"
 	"net/http"
 	"os"
+	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/charmbracelet/log"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/olivere/vite"
 	"github.com/spf13/pflag"
 	"github.com/unmango/go/cli"
 )
 
-var indexTemplate = `
-<head>
-    <meta charset="UTF-8" />
-    <title>My Go Application</title>
-    {{ .Vite.Tags }}
-</head>
-<body>
-    <div id="app"></div>
-</body>
-`
+var (
+	dev bool
+
+	//go:embed all:dist
+	dist embed.FS
+)
 
 func main() {
-	dev := pflag.Bool("dev", false, "Development mode")
+	var err error
 
-	viteFragment, err := vite.HTMLFragment(vite.Config{
-		FS:    os.DirFS("frontend/dist"),
-		IsDev: *dev,
-	})
+	pflag.BoolVar(&dev, "dev", false, "Development mode")
+	pflag.Parse()
+
+	mux := chi.NewRouter()
+	mux.Use(middleware.Logger)
+	// mux.Use(Logger)
+
+	config := vite.Config{
+		IsDev:        dev,
+		ViteTemplate: vite.ReactSwcTs,
+	}
+
+	if dev {
+		log.Info("Running in development mode")
+		config.FS = os.DirFS(".")
+		config.ViteURL = "http://localhost:5173"
+	} else {
+		if config.FS, err = fs.Sub(dist, "dist"); err != nil {
+			cli.Fail(err)
+		}
+	}
+
+	viteHandler, err := vite.NewHandler(config)
 	if err != nil {
 		cli.Fail(err)
 	}
 
-	router := gin.Default()
+	mux.Use(IndexHtml)
+	mux.Get("/*", viteHandler.ServeHTTP)
 
-	tmpl := template.Must(template.New("index").Parse(indexTemplate))
-	router.SetHTMLTemplate(tmpl)
-	router.GET()
+	lis, err := net.Listen("tcp", ":3333")
+	if err != nil {
+		cli.Fail(err)
+	}
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		pageData := map[string]any{
-			"Vite": viteFragment,
+	log.Info("Serving", "addr", lis.Addr())
+	if err = http.Serve(lis, mux); err != nil {
+		cli.Fail(err)
+	}
+}
+
+func IndexHtml(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/" || r.URL.Path == "/index.html" {
+			ctx := vite.MetadataToContext(r.Context(), vite.Metadata{
+				Title: "Hello, Vite!",
+			})
+
+			next.ServeHTTP(w, r.WithContext(ctx))
+		} else {
+			next.ServeHTTP(w, r)
 		}
+	})
+}
 
-		if err = tmpl.Execute(w, pageData); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+func Logger(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log := log.FromContext(r.Context())
+		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+		url, t := r.Host, time.Now()
+
+		defer func() {
+			log.Info(url,
+				"status", ww.Status(),
+				"bytesWritten", ww.BytesWritten(),
+				"header", ww.Header(),
+				"elapsed", time.Since(t),
+			)
+		}()
+
+		next.ServeHTTP(w, r)
 	})
 }
