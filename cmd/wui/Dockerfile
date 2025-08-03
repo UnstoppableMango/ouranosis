@@ -24,4 +24,4 @@ RUN go build -o /usr/bin/wui
 
 EXPOSE 3333
 
-CMD [ "/usr/bin/wui" ]
+CMD ["/usr/bin/wui"]
