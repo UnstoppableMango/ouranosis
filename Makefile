@@ -24,12 +24,13 @@ docker: bin/wui.tar
 frontend: bin/wui
 start-frontend:
 	$(BUN) run --cwd cmd/wui start
+world: bin/world
 
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
 
 bin/wui: cmd/wui/dist/index.html
-bin/client bin/server: bin/%: go.mod ${GO_SRC}
+bin/client bin/server bin/world: bin/%: go.mod ${GO_SRC}
 	$(GO) build -o $@ ./cmd/$*
 
 bin/wui.tar: cmd/wui/Dockerfile cmd/wui/main.go ${TS_SRC}
