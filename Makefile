@@ -24,22 +24,21 @@ docker: bin/wui.tar
 frontend: bin/wui
 start-frontend:
 	$(BUN) run --cwd cmd/wui start
+world: bin/world
 
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
 
 bin/wui: cmd/wui/dist/index.html
-bin/client bin/server: bin/%: go.mod ${GO_SRC}
+$(addprefix bin/,client server world wui): bin/%: go.mod ${GO_SRC}
 	$(GO) build -o $@ ./cmd/$*
 
 bin/wui.tar: cmd/wui/Dockerfile cmd/wui/main.go ${TS_SRC}
 	$(DOCKER) build ${CURDIR} --file $< --output type=tar,dest=$@
 	$(DOCKER) import $@ ouranosis-wui
 
-cmd/wui/dist/index.html: cmd/wui/bun.lock
+cmd/wui/dist/index.html: .make/bun-install
 	$(BUN) run --cwd cmd/wui build
-cmd/wui/bun.lock: cmd/wui/package.json
-	$(BUN) install --cwd $(dir $@)
 
 buf.lock: buf.yaml ${PROTO_SRC}
 	$(BUF) dep update
@@ -57,6 +56,10 @@ go.sum: go.mod ${GO_SRC}
 
 .make/buf-lint: ${PROTO_SRC}
 	$(BUF) lint $(addprefix --path ,$?)
+	@touch $@
+
+.make/bun-install: cmd/wui/package.json
+	$(BUN) install --cwd cmd/wui
 	@touch $@
 
 .make/go-fmt: ${GO_SRC}
