@@ -5,6 +5,7 @@ BUF    ?= $(GO) tool buf
 BUN    ?= bun
 DEVCTL ?= $(GO) tool devctl
 DOCKER ?= docker
+DPRINT ?= dprint
 GINKGO ?= $(GO) tool ginkgo
 
 GO_SRC      != $(DEVCTL) list --go
@@ -64,6 +65,9 @@ go.sum: go.mod ${GO_SRC}
 .make/bun-install: cmd/wui/package.json
 	$(BUN) install --cwd cmd/wui
 	@touch $@
+
+.make/dprint-fmt: ${TS_SRC}
+	$(DPRINT) fmt
 
 .make/go-fmt: ${GO_SRC}
 	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))

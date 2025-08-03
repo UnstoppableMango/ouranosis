@@ -1,4 +1,4 @@
-#syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1
 FROM oven/bun:1.2.19-slim AS web
 
 WORKDIR /build
@@ -23,4 +23,4 @@ RUN go build -o /usr/bin/wui
 
 EXPOSE 3333
 
-CMD [ "/usr/bin/wui" ]
+CMD ["/usr/bin/wui"]
