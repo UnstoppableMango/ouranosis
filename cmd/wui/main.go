@@ -14,6 +14,7 @@ import (
 	"github.com/olivere/vite"
 	"github.com/spf13/pflag"
 	"github.com/unmango/go/cli"
+	"github.com/unstoppablemango/ouranosis/pkg/frontend/player"
 )
 
 var (
@@ -54,6 +55,7 @@ func main() {
 	}
 
 	mux.Use(IndexHtml)
+	mux.Post("/player", player.Post)
 	mux.Get("/*", viteHandler.ServeHTTP)
 
 	lis, err := net.Listen("tcp", ":3333")

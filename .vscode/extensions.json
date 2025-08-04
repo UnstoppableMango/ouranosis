@@ -4,6 +4,7 @@
     "editorconfig.editorconfig",
     "golang.go",
     "bufbuild.vscode-buf",
-    "oven.bun-vscode"
+    "oven.bun-vscode",
+    "bradlc.vscode-tailwindcss"
   ]
 }
