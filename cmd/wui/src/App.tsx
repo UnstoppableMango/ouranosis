@@ -1,11 +1,15 @@
 import { useState, type FormEvent } from 'react'
+import { player } from './services';
 
 function App() {
 	const [name, setName] = useState('');
 
 	function handleSubmit(e: FormEvent) {
 		e.preventDefault();
-		console.log(name);
+
+		player.create(name)
+			.then(x => console.log(x.id))
+			.catch(x => console.log(x));
 	}
 
   return (

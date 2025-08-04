@@ -12,8 +12,6 @@ type PostPlayerRequest struct {
 }
 
 func Post(w http.ResponseWriter, r *http.Request) {
-	id := uuid.New()
-
 	defer r.Body.Close()
 	dec := json.NewDecoder(r.Body)
 
@@ -30,9 +28,14 @@ func Handle(w http.ResponseWriter, req *PostPlayerRequest) {
 		Id:   uuid.New(),
 		Name: req.Name,
 	}
+
+	enc := json.NewEncoder(w)
+	if err := enc.Encode(p); err != nil {
+		http.Error(w, http.StatusText(500), 500)
+	}
 }
 
 type Player struct {
-	Id   uuid.UUID
-	Name string
+	Id   uuid.UUID `json:"id"`
+	Name string    `json:"name"`
 }
