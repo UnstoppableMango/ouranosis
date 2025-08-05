@@ -14,7 +14,7 @@ import (
 	"github.com/olivere/vite"
 	"github.com/spf13/pflag"
 	"github.com/unmango/go/cli"
-	"github.com/unstoppablemango/ouranosis/pkg/frontend/player"
+	"github.com/unstoppablemango/ouranosis/pkg/frontend"
 )
 
 var (
@@ -32,7 +32,6 @@ func main() {
 
 	mux := chi.NewRouter()
 	mux.Use(middleware.Logger)
-	// mux.Use(Logger)
 
 	config := vite.Config{
 		IsDev:        dev,
@@ -54,8 +53,10 @@ func main() {
 		cli.Fail(err)
 	}
 
+	frontend := frontend.New()
+
 	mux.Use(IndexHtml)
-	mux.Post("/player", player.Post)
+	mux.Route("/players", frontend.Players)
 	mux.Get("/*", viteHandler.ServeHTTP)
 
 	lis, err := net.Listen("tcp", ":3333")
@@ -83,6 +84,7 @@ func IndexHtml(next http.Handler) http.Handler {
 	})
 }
 
+// Logger will maybe one day replace middleware.Logger, we shall see
 func Logger(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log := log.FromContext(r.Context())

@@ -1,3 +1,9 @@
 package ouranosis
 
-type Entity interface{}
+import (
+	"context"
+)
+
+type Entity interface {
+	Tick(context.Context, Tick) error
+}

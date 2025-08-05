@@ -24,13 +24,13 @@ func (w *World) Run(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case tick := <-t.C:
-			if err := w.tick(ctx, Tick(tick)); err != nil {
+			if err := w.Tick(ctx, Tick(tick)); err != nil {
 				return err
 			}
 		}
 	}
 }
 
-func (w *World) tick(ctx context.Context, t Tick) error {
+func (w *World) Tick(ctx context.Context, t Tick) error {
 	return nil
 }
