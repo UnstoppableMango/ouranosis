@@ -1,43 +1,61 @@
 package frontend
 
 import (
-	"encoding/json"
+	"io"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/unmango/go/codec"
+	"github.com/unstoppablemango/ouranosis/pkg/frontend/player"
 )
 
+type Players interface {
+	Post(*player.PostRequest) (*player.PostResponse, error)
+}
+
 type Frontend struct {
-	State *State
+	Players
 }
 
 func New() *Frontend {
 	return &Frontend{}
 }
 
-func (f Frontend) Players(r chi.Router) {
-	r.Post("/", f.CreatePlayer)
+type HandlerFunc[T, V any] func(T) (V, error)
+
+type RequestReader[T any] interface {
+	Request(*http.Request) (T, error)
 }
 
-func (f Frontend) CreatePlayer(w http.ResponseWriter, r *http.Request) {
-	dec := json.NewDecoder(r.Body)
-	defer r.Body.Close()
+type ResponseWriter[T any] interface {
+	Response(http.ResponseWriter, T) error
+}
 
-	req := &CreatePlayerRequest{}
-	if err := dec.Decode(req); err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		return
-	}
+type Codec interface {
+	Encoder(io.Writer) codec.Encoder
+	Decoder(io.Reader) codec.Decoder
+}
 
-	res, err := f.State.PostPlayer(r.Context(), req)
-	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		return
-	}
+func Handler[T, V any](h HandlerFunc[T, V], c Codec) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		defer r.Body.Close()
+		dec := c.Decoder(r.Body)
 
-	enc := json.NewEncoder(w)
-	if err = enc.Encode(res); err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		return
+		var req T
+		if err := dec.Decode(&req); err != nil {
+			http.Error(w, http.StatusText(500), 500)
+			return
+		}
+
+		res, err := h(req)
+		if err != nil {
+			http.Error(w, http.StatusText(500), 500)
+			return
+		}
+
+		enc := c.Encoder(w)
+		if err := enc.Encode(res); err != nil {
+			http.Error(w, http.StatusText(500), 500)
+			return
+		}
 	}
 }

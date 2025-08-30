@@ -11,10 +11,11 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/render"
 	"github.com/olivere/vite"
 	"github.com/spf13/pflag"
 	"github.com/unmango/go/cli"
-	"github.com/unstoppablemango/ouranosis/pkg/frontend"
+	"github.com/unstoppablemango/ouranosis/pkg/frontend/player"
 )
 
 var (
@@ -31,7 +32,11 @@ func main() {
 	pflag.Parse()
 
 	mux := chi.NewRouter()
+	mux.Use(middleware.RequestID)
+	mux.Use(middleware.RealIP)
 	mux.Use(middleware.Logger)
+	mux.Use(middleware.Recoverer)
+	mux.Use(render.SetContentType(render.ContentTypeJSON))
 
 	config := vite.Config{
 		IsDev:        dev,
@@ -53,10 +58,10 @@ func main() {
 		cli.Fail(err)
 	}
 
-	frontend := frontend.New()
-
 	mux.Use(IndexHtml)
-	mux.Route("/players", frontend.Players)
+	mux.Route("/player", func(r chi.Router) {
+		r.Post("/", player.Create)
+	})
 	mux.Get("/*", viteHandler.ServeHTTP)
 
 	lis, err := net.Listen("tcp", ":3333")
