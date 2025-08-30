@@ -14,6 +14,7 @@ require (
 	buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.6-20250511232440-7aece642b516.1
 	github.com/charmbracelet/log v0.4.2
 	github.com/go-chi/chi/v5 v5.2.2
+	github.com/go-chi/render v1.0.3
 	github.com/google/uuid v1.6.0
 	github.com/olivere/vite v0.1.0
 	github.com/onsi/ginkgo/v2 v2.23.4
@@ -67,7 +68,6 @@ require (
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
-	github.com/go-chi/render v1.0.3 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect

@@ -50,26 +50,4 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		render.Status(r, http.StatusCreated)
 		render.Render(w, r, &PostResponse{p})
 	}
-
-	player := Player{
-		Id:   uuid.New(),
-		Name: p.Name,
-	}
-
-	enc := json.NewEncoder(w)
-	if err := enc.Encode(player); err != nil {
-		http.Error(w, http.StatusText(500), 500)
-	}
-}
-
-func (h *Handler) Handle(w http.ResponseWriter, req *PostPlayerRequest) {
-	p := Player{
-		Id:   uuid.New(),
-		Name: req.Name,
-	}
-
-	enc := json.NewEncoder(w)
-	if err := enc.Encode(p); err != nil {
-		http.Error(w, http.StatusText(500), 500)
-	}
 }
