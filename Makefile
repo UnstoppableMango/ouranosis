@@ -1,4 +1,5 @@
 _ != mkdir -p .make
+PROJECT := ouranosis
 
 GO     ?= go
 BUF    ?= $(GO) tool buf
@@ -22,9 +23,12 @@ tidy: go.sum buf.lock
 docker: bin/wui.tar
 
 frontend: bin/wui
+world: bin/world
+
 start-frontend:
 	$(BUN) run --cwd cmd/wui start
-world: bin/world
+start-world:
+	$(GO) run ./cmd/world
 
 ${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
 	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
@@ -34,8 +38,9 @@ $(addprefix bin/,client server world wui): bin/%: go.mod ${GO_SRC}
 	$(GO) build -o $@ ./cmd/$*
 
 bin/wui.tar: cmd/wui/Dockerfile cmd/wui/main.go ${TS_SRC}
-	$(DOCKER) build ${CURDIR} --file $< --output type=tar,dest=$@
-	$(DOCKER) import $@ ouranosis-wui
+	$(DOCKER) build ${CURDIR} --file $< \
+	--output type=tar,dest=$@ \
+	--output type=image,name=${PROJECT}
 
 cmd/wui/dist/index.html: .make/bun-install
 	$(BUN) run --cwd cmd/wui build

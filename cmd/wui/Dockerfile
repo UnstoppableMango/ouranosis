@@ -17,6 +17,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY cmd/wui/main.go ./
+COPY pkg/ ./pkg
 COPY --from=web /build/dist ./dist
 
 RUN go build -o /usr/bin/wui

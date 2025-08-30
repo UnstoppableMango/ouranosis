@@ -13,8 +13,9 @@ tool (
 require (
 	buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.6-20250511232440-7aece642b516.1
 	github.com/charmbracelet/log v0.4.2
-	github.com/google/uuid v1.6.0
 	github.com/go-chi/chi/v5 v5.2.2
+	github.com/go-chi/render v1.0.3
+	github.com/google/uuid v1.6.0
 	github.com/olivere/vite v0.1.0
 	github.com/onsi/ginkgo/v2 v2.23.4
 	github.com/onsi/gomega v1.38.0
@@ -43,6 +44,7 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20250102033503-faa5f7b0171c // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/PuerkitoBio/purell v1.2.1 // indirect
+	github.com/ajg/form v1.5.1 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/bufbuild/buf v1.56.0 // indirect
@@ -79,7 +81,6 @@ require (
 	github.com/google/go-github/v72 v72.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/pprof v0.0.0-20250607225305-033d6d78b36a // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/goware/urlx v0.3.2 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
