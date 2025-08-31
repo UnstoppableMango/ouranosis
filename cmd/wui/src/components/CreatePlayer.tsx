@@ -1,21 +1,16 @@
 import { useState, type FormEvent, type JSX } from 'react';
-import { player, type Player } from '../services';
 
 interface Props {
-	setPlayer(player: Player): void;
+	onSubmit(name: string): void;
 }
 
-function CreatePlayer({ setPlayer }: Props): JSX.Element {
+function CreatePlayer({ onSubmit }: Props): JSX.Element {
 	const [name, setName] = useState('');
-	const [error, setError] = useState<Error>();
 
-	function handleSubmit(e: FormEvent) {
+	const handleSubmit = (e: FormEvent): void => {
 		e.preventDefault();
-
-		player.create(name)
-			.then(setPlayer)
-			.catch(setError);
-	}
+		onSubmit(name);
+	};
 
 	return (
 		<div className='h-svh w-svw flex items-center justify-center flex-col gap-4'>
@@ -31,7 +26,6 @@ function CreatePlayer({ setPlayer }: Props): JSX.Element {
 				/>
 				<input className='p-1 bg-gray-500 rounded-md' type='submit' value='Submit' />
 			</form>
-			{error && <span>{error.toString()}</span>}
 		</div>
 	);
 }

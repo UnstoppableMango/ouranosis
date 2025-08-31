@@ -60,8 +60,10 @@ func main() {
 
 	mux.Use(IndexHtml)
 	mux.Route("/player", func(r chi.Router) {
+		r.Get("/{id}", player.Get)
 		r.Post("/", player.Create)
 	})
+
 	mux.Get("/*", viteHandler.ServeHTTP)
 
 	lis, err := net.Listen("tcp", ":3333")
