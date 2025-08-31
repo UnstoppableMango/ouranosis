@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { CreatePlayer, Game } from './components';
-import { player, session, type Player } from './services';
+import { player, session, world, type Player } from './services';
 
 function App() {
 	const [p, setP] = useState<Player | null>(null);
@@ -27,8 +27,14 @@ function App() {
 			.catch(setError);
 	}, []);
 
+	const createWorld = useCallback((playerId: string) => {
+		world.create(playerId)
+			.then(console.log)
+			.catch(setError);
+	}, []);
+
 	if (p !== null) {
-		return <Game player={p} />
+		return <Game player={p} start={createWorld} />
 	}
 
   return (

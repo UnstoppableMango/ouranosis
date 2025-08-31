@@ -16,6 +16,7 @@ import (
 	"github.com/spf13/pflag"
 	"github.com/unmango/go/cli"
 	"github.com/unstoppablemango/ouranosis/pkg/frontend/player"
+	"github.com/unstoppablemango/ouranosis/pkg/frontend/world"
 )
 
 var (
@@ -62,6 +63,9 @@ func main() {
 	mux.Route("/player", func(r chi.Router) {
 		r.Get("/{id}", player.Get)
 		r.Post("/", player.Create)
+	})
+	mux.Route("/world", func(r chi.Router) {
+		r.Post("/", world.Create)
 	})
 
 	mux.Get("/*", viteHandler.ServeHTTP)
