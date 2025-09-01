@@ -1,46 +1,20 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { CreatePlayer, Game } from './components';
-import { player, session, world, type Player } from './services';
+import { useApp } from './hooks';
 
 function App() {
-	const [p, setP] = useState<Player | null>(null);
-	const [error, setError] = useState<Error>();
+	const app = useApp();
 
-	useEffect(() => {
-		const id = session.get();
-		if (id === null) return;
+	useEffect(() => app.load(), [app]);
 
-		player.get(id)
-			.then(setP)
-			.catch(e => {
-				setError(e);
-				session.clear();
-			});
-	}, []);
-
-	const createPlayer = useCallback((name: string): void => {
-		player.create(name)
-			.then(player => {
-				setP(player);
-				session.set(player.id);
-			})
-			.catch(setError);
-	}, []);
-
-	const createWorld = useCallback((playerId: string) => {
-		world.create(playerId)
-			.then(console.log)
-			.catch(setError);
-	}, []);
-
-	if (p !== null) {
-		return <Game player={p} start={createWorld} />
+	if (app.player !== null) {
+		return <Game player={app.player} start={console.log} />
 	}
 
   return (
 		<div>
-			<CreatePlayer onSubmit={createPlayer} />
-			<span>{error?.message}</span>
+			<CreatePlayer onSubmit={app.create} />
+			<span>{app.error?.message}</span>
 		</div>
 	);
 }
