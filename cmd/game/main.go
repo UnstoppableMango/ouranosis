@@ -6,82 +6,31 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/unmango/go/cli"
+	"github.com/unstoppablemango/ouranosis/pkg/domain"
+	"github.com/unstoppablemango/ouranosis/pkg/tui"
 )
 
-type Stat struct {
-	Value int64
-}
-
-type Character struct {
-	Name    string
-	Attack  Stat
-	Defense Stat
-	Speed   Stat
-	Luck    Stat
-}
-
-func (c Character) String() string {
-	return c.Name
-}
-
-type Point struct {
-	X, Y int64
-}
-
-func (p Point) at(x, y int64) bool {
-	return p.X == x && p.Y == y
-}
-
-func (p Point) String() string {
-	return fmt.Sprintf("X: %d, Y: %d", p.X, p.Y)
-}
-
-type Entity struct {
-	Character
-	Pos Point
-}
-
-func (e Entity) String() string {
-	return fmt.Sprintf("%s - %s", e.Pos, e.Character)
-}
-
-func (e *Entity) up() {
-	e.Pos.Y++
-}
-
-func (e *Entity) down() {
-	e.Pos.Y--
-}
-
-func (e *Entity) left() {
-	e.Pos.X--
-}
-
-func (e *Entity) right() {
-	e.Pos.X++
-}
-
 type model struct {
-	player Entity
+	player domain.Player
 }
 
 func (m model) up() (tea.Model, tea.Cmd) {
-	m.player.up()
+	m.player.Up()
 	return m, nil
 }
 
 func (m model) down() (tea.Model, tea.Cmd) {
-	m.player.down()
+	m.player.Down()
 	return m, nil
 }
 
 func (m model) left() (tea.Model, tea.Cmd) {
-	m.player.left()
+	m.player.Left()
 	return m, nil
 }
 
 func (m model) right() (tea.Model, tea.Cmd) {
-	m.player.right()
+	m.player.Right()
 	return m, nil
 }
 
@@ -114,11 +63,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 // View implements tea.Model.
 func (m model) View() string {
 	b := &strings.Builder{}
-	// fmt.Fprintf(b, "%s\n", m.player)
 
 	for y := 10; y > -10; y-- {
 		for x := -10; x < 10; x++ {
-			if m.player.Pos.at(int64(x), int64(y)) {
+			if m.player.At(x, y) {
 				fmt.Fprint(b, "X")
 			} else {
 				fmt.Fprint(b, " ")
@@ -133,12 +81,7 @@ func (m model) View() string {
 
 func main() {
 	p := tea.NewProgram(model{
-		player: Entity{
-			Character: Character{
-				Name: "Jeff",
-			},
-			Pos: Point{0, 0},
-		},
+		player: tui.NewPlayer("Jeff"),
 	})
 	if _, err := p.Run(); err != nil {
 		cli.Fail(err)
