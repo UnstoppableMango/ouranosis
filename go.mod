@@ -19,7 +19,7 @@ require (
 	github.com/olivere/vite v0.1.0
 	github.com/onsi/ginkgo/v2 v2.25.3
 	github.com/onsi/gomega v1.38.2
-	github.com/spf13/pflag v1.0.7
+	github.com/spf13/pflag v1.0.10
 	github.com/unmango/go v0.5.1
 	google.golang.org/grpc v1.74.2
 	google.golang.org/protobuf v1.36.7
