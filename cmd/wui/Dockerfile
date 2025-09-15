@@ -9,7 +9,7 @@ RUN bun install --frozen-lockfile
 COPY cmd/wui/ .
 RUN bun run build
 
-FROM golang:1.24.5-bookworm AS api
+FROM golang:1.25.1-bookworm AS api
 
 WORKDIR /build
 
