@@ -2,7 +2,7 @@ module github.com/unstoppablemango/ouranosis
 
 go 1.24.4
 
-toolchain go1.25.1
+toolchain go1.26.2
 
 tool (
 	github.com/bufbuild/buf/cmd/buf
