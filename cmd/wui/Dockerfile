@@ -1,5 +1,5 @@
 #syntax=docker/dockerfile:1
-FROM oven/bun:1.2.22-slim AS web
+FROM oven/bun:1.3.13-slim AS web
 
 WORKDIR /build
 
