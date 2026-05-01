@@ -1,6 +1,6 @@
 module github.com/unstoppablemango/ouranosis
 
-go 1.24.4
+go 1.25.5
 
 toolchain go1.26.2
 
@@ -20,7 +20,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.28.1
 	github.com/onsi/gomega v1.39.0
 	github.com/spf13/pflag v1.0.10
-	github.com/unmango/go v0.5.1
+	github.com/unmango/go v0.15.1
 	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.11
 )
