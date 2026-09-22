@@ -1,6 +1,7 @@
-GO_SRC ?= $(shell find . -name '*.go')
+GO_SRC   ?= $(shell find . -name '*.go')
+PACKAGES ?= $(shell go list ./... 2>/dev/null)
 
-build: bin/ouranosis
+build: $(if ${PACKAGES},bin/ouranosis)
 
 bin/ouranosis: go.mod ${GO_SRC}
 	go build -o $@ ./cmd/ouranosis
@@ -9,10 +10,10 @@ run: bin/ouranosis
 	./bin/ouranosis
 
 test:
-	go tool ginkgo run -r
+	$(if ${PACKAGES},go tool ginkgo run -r,@echo no packages to test)
 
 check lint:
-	go vet ./...
+	$(if ${PACKAGES},go vet ./...,@echo no packages to check)
 
 format fmt:
 	gofmt -w .
