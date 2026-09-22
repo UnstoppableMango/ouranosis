@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 jobs:
   build:
@@ -18,12 +17,4 @@ jobs:
           go-version-file: go.mod
           cache-dependency-path: go.sum
 
-      - run: make test
-
-  docker:
-    name: Docker
-    runs-on: ubuntu-latest
-    steps:
-      - uses: docker/build-push-action@v6
-        with:
-          file: cmd/wui/Dockerfile
+      - run: make build test check

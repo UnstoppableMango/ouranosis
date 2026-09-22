@@ -1,8 +1,4 @@
-bin/
-dist/
-node_modules/
-.make/
 .vscode/*
 !.vscode/extensions.json
 .envrc
-.DS_Store
+bin/
