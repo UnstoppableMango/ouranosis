@@ -1,80 +1,23 @@
-_ != mkdir -p .make
-PROJECT := ouranosis
+GO_SRC ?= $(shell find . -name '*.go')
 
-GO     ?= go
-BUF    ?= $(GO) tool buf
-BUN    ?= bun
-DEVCTL ?= $(GO) tool devctl
-DOCKER ?= docker
-GINKGO ?= $(GO) tool ginkgo
+build: bin/ouranosis
 
-GO_SRC      != $(DEVCTL) list --go
-TS_SRC      != $(DEVCTL) list --ts
-PROTO_SRC   != $(BUF) ls-files
-GO_PB_SRC   := ${PROTO_SRC:proto/%.proto=gen/%.pb.go}
-GO_GRPC_SRC := ${PROTO_SRC:proto/%.proto=gen/%_grpc.pb.go}
+bin/ouranosis: go.mod ${GO_SRC}
+	go build -o $@ ./cmd/ouranosis
 
-build: bin/client bin/server bin/wui .make/buf-build
-gen generate: ${GO_PB_SRC}
-test: .make/ginkgo-run
-fmt format: .make/buf-fmt .make/go-fmt
-lint: .make/buf-lint .make/go-vet
-tidy: go.sum buf.lock
-docker: bin/wui.tar
+run: bin/ouranosis
+	./bin/ouranosis
 
-frontend: bin/wui
-world: bin/world
+test:
+	go tool ginkgo run -r
 
-start-frontend:
-	$(BUN) run --cwd cmd/wui start
-start-world:
-	$(GO) run ./cmd/world
+check lint:
+	go vet ./...
 
-${GO_PB_SRC} ${GO_GRPC_SRC} &: buf.gen.yaml ${PROTO_SRC}
-	$(BUF) generate $(addprefix --path ,$(filter ${PROTO_SRC},$?))
+format fmt:
+	gofmt -w .
 
-bin/wui: cmd/wui/dist/index.html
-$(addprefix bin/,client server world wui): bin/%: go.mod ${GO_SRC}
-	$(GO) build -o $@ ./cmd/$*
-
-bin/wui.tar: cmd/wui/Dockerfile cmd/wui/main.go ${TS_SRC}
-	$(DOCKER) build ${CURDIR} --file $< \
-	--output type=tar,dest=$@ \
-	--output type=image,name=${PROJECT}
-
-cmd/wui/dist/index.html: .make/bun-install
-	$(BUN) run --cwd cmd/wui build
-
-buf.lock: buf.yaml ${PROTO_SRC}
-	$(BUF) dep update
+tidy: go.sum
 
 go.sum: go.mod ${GO_SRC}
-	$(GO) mod tidy
-
-.make/buf-build: ${PROTO_SRC}
-	$(BUF) build $(addprefix --path ,$?)
-	@touch $@
-
-.make/buf-fmt: ${PROTO_SRC}
-	$(BUF) format --write $(addprefix --path ,$?)
-	@touch $@
-
-.make/buf-lint: ${PROTO_SRC}
-	$(BUF) lint $(addprefix --path ,$?)
-	@touch $@
-
-.make/bun-install: cmd/wui/package.json
-	$(BUN) install --cwd cmd/wui
-	@touch $@
-
-.make/go-fmt: ${GO_SRC}
-	$(GO) fmt $(addprefix ./,$(sort $(dir $?)))
-	@touch $@
-
-.make/ginkgo-run: ${GO_SRC}
-	$(GINKGO) $(sort $(dir $?))
-	@touch $@
-
-.make/go-vet: ${GO_SRC}
-	$(GO) vet $(addprefix ./,$(sort $(dir $?)))
-	@touch $@
+	go mod tidy
