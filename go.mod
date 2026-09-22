@@ -11,7 +11,7 @@ require (
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/onsi/ginkgo/v2 v2.33.0
 	github.com/onsi/gomega v1.43.1
-	github.com/unmango/game v0.0.1-alpha.1.0.20260922050306-a7943ffe333b
+	github.com/unmango/game v0.0.1-alpha.1.0.20260922051813-61513f4d6818
 	google.golang.org/protobuf v1.36.12
 )
 
