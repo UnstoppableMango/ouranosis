@@ -11,7 +11,7 @@ tool (
 )
 
 require (
-	buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.11-20250511232440-7aece642b516.1
+	buf.build/gen/go/unmango/game/protocolbuffers/go v1.36.12-20261002041116-e0569ba902e1.2
 	github.com/charmbracelet/log v0.4.2
 	github.com/go-chi/chi/v5 v5.2.4
 	github.com/go-chi/render v1.0.3
@@ -22,7 +22,7 @@ require (
 	github.com/spf13/pflag v1.0.10
 	github.com/unmango/go v0.5.1
 	google.golang.org/grpc v1.75.1
-	google.golang.org/protobuf v1.36.11
+	google.golang.org/protobuf v1.36.12
 )
 
 require (
