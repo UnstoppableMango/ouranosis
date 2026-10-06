@@ -1,6 +1,6 @@
 module github.com/unstoppablemango/ouranosis
 
-go 1.25.0
+go 1.25.5
 
 toolchain go1.27.1
 
@@ -17,10 +17,10 @@ require (
 	github.com/go-chi/render v1.0.3
 	github.com/google/uuid v1.6.0
 	github.com/olivere/vite v0.1.0
-	github.com/onsi/ginkgo/v2 v2.28.1
-	github.com/onsi/gomega v1.39.0
+	github.com/onsi/ginkgo/v2 v2.29.0
+	github.com/onsi/gomega v1.41.0
 	github.com/spf13/pflag v1.0.10
-	github.com/unmango/go v0.5.1
+	github.com/unmango/go v0.16.6
 	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.12
 )
@@ -81,7 +81,7 @@ require (
 	github.com/google/go-containerregistry v0.20.6 // indirect
 	github.com/google/go-github/v72 v72.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/google/pprof v0.0.0-20260115054156-294ebfa9ad83 // indirect
+	github.com/google/pprof v0.0.0-20260402051712-545e8a4df936 // indirect
 	github.com/goware/urlx v0.3.2 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
