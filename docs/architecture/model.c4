@@ -1,0 +1,110 @@
+// What exists and how it talks. Planned parts carry #planned.
+model {
+  player = actor 'Player' {
+    description 'Creates a character and trains it'
+  }
+
+  ouranosis = system 'ouranosis' {
+    description 'World simulation game built on unmango/game'
+    link https://github.com/UnstoppableMango/ouranosis 'repository'
+    link https://github.com/UnstoppableMango/ouranosis/blob/main/docs/design/vision.md 'vision'
+    link https://github.com/UnstoppableMango/ouranosis/blob/main/docs/decisions/0001-built-on-unmango-game.md 'ADR 0001'
+
+    tui = container 'ouranosis TUI' {
+      description 'cmd/ouranosis: the first client'
+      technology 'Go, bubbletea'
+      link https://github.com/UnstoppableMango/ouranosis/tree/main/cmd/ouranosis 'source'
+      link https://github.com/UnstoppableMango/ouranosis/blob/main/docs/decisions/0002-tui-first.md 'ADR 0002'
+
+      screens = component 'screens' {
+        description 'Character creation, character sheet, training'
+        technology 'bubbletea'
+        link https://github.com/UnstoppableMango/ouranosis/blob/main/cmd/ouranosis/model.go 'source'
+        link https://github.com/UnstoppableMango/ouranosis/blob/main/docs/design/first-slice.md 'first slice'
+      }
+    }
+
+    webClient = container 'web client' {
+      #planned
+      description 'A second client reusing pkg/ (ADR 0002)'
+      link https://github.com/UnstoppableMango/ouranosis/blob/main/docs/decisions/0002-tui-first.md 'ADR 0002'
+    }
+
+    character = library 'character' {
+      description 'pkg/character: the model, classes, stats, and every framework path'
+      link https://github.com/UnstoppableMango/ouranosis/tree/main/pkg/character 'source'
+    }
+    training = library 'training' {
+      description 'pkg/training: the stat training sub-game and its curve parameters'
+      link https://github.com/UnstoppableMango/ouranosis/tree/main/pkg/training 'source'
+    }
+    client = library 'game client' {
+      description 'pkg/game: the Calculator interface, a ConnectRPC client, and an in-process Local'
+      link https://github.com/UnstoppableMango/ouranosis/tree/main/pkg/game 'source'
+    }
+    save = library 'save' {
+      description 'pkg/save: JSON save until the framework ledger exists'
+      link https://github.com/UnstoppableMango/ouranosis/tree/main/pkg/save 'source'
+    }
+    saveFile = store 'save.json' {
+      description 'Character, experience, upgrades, last seen time, under the user config directory'
+    }
+    records = store 'is.ouranos records' {
+      #planned
+      description 'Game lexicons on the AT Protocol (ADR 0004)'
+      link https://github.com/UnstoppableMango/ouranosis/blob/main/docs/decisions/0004-ouranos-is-domain.md 'ADR 0004'
+    }
+
+    tui.screens -> character 'creates'
+    tui.screens -> training 'opens a session'
+    tui.screens -> save 'loads and persists'
+    webClient -> character 'reuses'
+    webClient -> training 'reuses'
+    training -> character 'levels'
+    training -> client 'asks costs, rates, and offline gains'
+    character -> client 'rolls base stats'
+    save -> character 'serializes'
+    save -> saveFile 'writes'
+    character -> records 'publishes' {
+      #planned
+    }
+  }
+
+  framework = system 'unmango/game' {
+    #framework
+    description 'The framework: one server per player, owning a root seed and answering numeric questions'
+    link https://github.com/unmango/game 'repository'
+    link https://unmango.github.io/game/ 'architecture site'
+    link https://github.com/UnstoppableMango/ouranosis/blob/main/docs/decisions/0003-abstractions-live-in-the-framework.md 'ADR 0003'
+
+    server = container 'game server' {
+      #framework
+      description 'cmd/game, run locally at localhost:8080'
+      technology 'Go, ConnectRPC'
+      link https://github.com/unmango/game/tree/main/cmd/game 'source'
+    }
+    ledger = container 'LedgerService' {
+      #framework #planned
+      description 'Replaces save.json once it exists'
+      link https://github.com/unmango/game/blob/main/docs/decisions/0006-time-and-ledger.md 'game ADR 0006'
+    }
+    modules = library 'Go module' {
+      #framework
+      description 'convert, curve, num, seed, and the generated proto client'
+      link https://pkg.go.dev/github.com/unmango/game 'pkg.go.dev'
+    }
+  }
+
+  player -> ouranosis.tui.screens 'plays'
+  player -> ouranosis.webClient 'plays' {
+    #planned
+  }
+  ouranosis.client -> framework.server 'Derive, Evaluate, Invert, Advance' {
+    technology 'ConnectRPC'
+  }
+  ouranosis.client -> framework.modules 'imports'
+  ouranosis.training -> framework.modules 'authors curves in'
+  ouranosis.save -> framework.ledger 'replaced by' {
+    #planned
+  }
+}

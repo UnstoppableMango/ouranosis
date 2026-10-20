@@ -10,6 +10,8 @@ Every activity is a sub-game that feeds the same character, and the framework ke
 
 The design lives in `docs/design/` and the decisions in `docs/decisions/`.
 Read `docs/design/vision.md` for what the game is and `docs/design/first-slice.md` for what is being built.
+The architecture model in `docs/architecture/` draws the game and the parts of the framework it touches as a LikeC4 model (ADR 0005); update it when a package, client, or store is added.
+It is published to GitHub Pages from `main` by `.github/workflows/pages.yml`; link new elements to their source and ADRs with absolute GitHub URLs.
 
 ## Commands
 
@@ -22,7 +24,12 @@ make test       # go tool ginkgo run -r
 make check      # go vet
 make fmt        # gofmt
 make tidy       # go mod tidy
+make arch       # preview the LikeC4 architecture model
+make arch-check # validate the model
+make arch-build # build the static site into docs/architecture/dist
 ```
+
+The `arch` targets need Node.js; they install the `likec4` version pinned in `docs/architecture/package.json`.
 
 The TUI expects a framework server at `localhost:8080`.
 Start one from a checkout of `unmango/game` with `go run ./cmd/game`.
@@ -34,6 +41,8 @@ cmd/ouranosis/      the TUI binary
 pkg/game/           client for the framework's ConnectRPC services
 pkg/character/      character model and the paths it uses on the framework
 pkg/training/       the stat training sub-game
+pkg/save/           JSON save until the framework ledger exists
+docs/architecture/  LikeC4 model of the game
 docs/design/        design documents
 docs/decisions/     architecture decision records
 ```

@@ -1,0 +1,44 @@
+views {
+  view index {
+    title 'Landscape'
+    description 'The game, the framework it is built on, and its player'
+
+    include *
+
+    style element.tag = #planned {
+      border dashed
+      opacity 40%
+    }
+    style element.tag = #framework {
+      color secondary
+    }
+  }
+
+  view game of ouranosis {
+    title 'ouranosis'
+    description 'Packages under pkg/ hold the rules; clients only draw them'
+
+    include *
+    include framework.server, framework.modules, framework.ledger
+
+    style element.tag = #planned {
+      border dashed
+      opacity 40%
+    }
+    style element.tag = #framework {
+      color secondary
+    }
+  }
+
+  view tui of ouranosis.tui {
+    title 'ouranosis TUI'
+    description 'The first client and the packages it drives'
+
+    include *
+
+    style element.tag = #planned {
+      border dashed
+      opacity 40%
+    }
+  }
+}
