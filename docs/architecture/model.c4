@@ -91,6 +91,7 @@ model {
     modules = library 'Go module' {
       #framework
       description 'convert, curve, num, seed, and the generated proto client'
+      link https://github.com/unmango/game 'source'
       link https://pkg.go.dev/github.com/unmango/game 'pkg.go.dev'
     }
   }
