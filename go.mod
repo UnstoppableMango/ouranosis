@@ -10,7 +10,7 @@ require (
 	github.com/charmbracelet/bubbletea v1.3.10
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/onsi/ginkgo/v2 v2.33.0
-	github.com/onsi/gomega v1.43.1
+	github.com/onsi/gomega v1.44.0
 	github.com/unmango/game v0.0.1-alpha.1.0.20261002041100-abb7bd6c6179
 	google.golang.org/protobuf v1.36.12
 )
