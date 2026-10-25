@@ -46,3 +46,17 @@ Every path this game uses on the framework is a public contract with its players
 Paths are declared as constants in `pkg/character` and nowhere else.
 
 Tests use Ginkgo and Gomega.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in this repo's GitHub Issues. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context, with ADRs in `docs/decisions/`. See `docs/agents/domain.md`.
