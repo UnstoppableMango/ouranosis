@@ -1,8 +1,0 @@
-{
-  "name": "ouranosis-architecture",
-  "private": true,
-  "description": "Pins the LikeC4 CLI that validates and builds the architecture model",
-  "devDependencies": {
-    "likec4": "1.60.0"
-  }
-}

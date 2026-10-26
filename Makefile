@@ -1,7 +1,7 @@
 GO_SRC   ?= $(shell find . -name '*.go')
 PACKAGES ?= $(shell go list ./... 2>/dev/null)
 ARCH_DIR ?= docs/architecture
-LIKEC4   ?= cd ${ARCH_DIR} && npx --no-install likec4
+LIKEC4   ?= likec4
 
 build: $(if ${PACKAGES},bin/ouranosis)
 
@@ -25,16 +25,11 @@ tidy: go.sum
 go.sum: go.mod ${GO_SRC}
 	go mod tidy
 
-arch: ${ARCH_DIR}/node_modules
-	${LIKEC4} start
+arch:
+	${LIKEC4} start ${ARCH_DIR}
 
-arch-check: ${ARCH_DIR}/node_modules
-	${LIKEC4} validate
+arch-check:
+	nix flake check
 
-# Relative base and hash history let one build serve from any URL prefix.
-arch-build: ${ARCH_DIR}/node_modules
-	${LIKEC4} build --base ./ --use-hash-history --title 'ouranosis architecture' -o dist
-
-${ARCH_DIR}/node_modules: ${ARCH_DIR}/package.json ${ARCH_DIR}/package-lock.json
-	npm ci --prefix ${ARCH_DIR}
-	@touch $@
+arch-build:
+	nix build .#architecture

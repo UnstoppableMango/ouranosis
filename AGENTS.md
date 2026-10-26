@@ -24,12 +24,13 @@ make test       # go tool ginkgo run -r
 make check      # go vet
 make fmt        # gofmt
 make tidy       # go mod tidy
-make arch       # preview the LikeC4 architecture model
-make arch-check # validate the model
-make arch-build # build the static site into docs/architecture/dist
+make arch       # preview the LikeC4 architecture model (in nix develop)
+make arch-check # nix flake check: validate the model and build the site
+make arch-build # nix build .#architecture into result/
 ```
 
-The `arch` targets need Node.js; they install the `likec4` version pinned in `docs/architecture/package.json`.
+The `arch` targets need Nix; the flake builds only the architecture site with a2b's `lib.likec4`, and its dev shell supplies `likec4`.
+Go work needs no Nix.
 
 The TUI expects a framework server at `localhost:8080`.
 Start one from a checkout of `unmango/game` with `go run ./cmd/game`.
@@ -42,7 +43,7 @@ pkg/game/           client for the framework's ConnectRPC services
 pkg/character/      character model and the paths it uses on the framework
 pkg/training/       the stat training sub-game
 pkg/save/           JSON save until the framework ledger exists
-docs/architecture/  LikeC4 model of the game
+docs/architecture/  LikeC4 model of the game, built by flake.nix
 docs/design/        design documents
 docs/decisions/     architecture decision records
 ```

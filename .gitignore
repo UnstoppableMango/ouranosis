@@ -2,5 +2,4 @@
 !.vscode/extensions.json
 .envrc
 bin/
-docs/architecture/dist
-docs/architecture/node_modules
+result
