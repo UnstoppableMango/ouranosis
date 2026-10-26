@@ -1,5 +1,7 @@
 GO_SRC   ?= $(shell find . -name '*.go')
 PACKAGES ?= $(shell go list ./... 2>/dev/null)
+ARCH_DIR ?= docs/architecture
+LIKEC4   ?= likec4
 
 build: $(if ${PACKAGES},bin/ouranosis)
 
@@ -22,3 +24,12 @@ tidy: go.sum
 
 go.sum: go.mod ${GO_SRC}
 	go mod tidy
+
+arch:
+	${LIKEC4} start ${ARCH_DIR}
+
+arch-check:
+	nix flake check
+
+arch-build:
+	nix build .#architecture
